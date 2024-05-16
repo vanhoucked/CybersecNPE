@@ -1,2 +1,4 @@
 # Ignore the folder called "iso"
-/iso/
+*.vdi
+*.zip
+*.iso

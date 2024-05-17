@@ -24,6 +24,8 @@ Er werd voor Debian gekezen omdat Unifi hier native op draait. Daarnaast werd er
 
     > Deze commando's kunnen eventueel automatisch uitgevoerd worden met het VBoxManage guestcontrol commando.
 
+3. Voer op beide VM's volgende commando's uit om een IP-adres van de DHCP-server te ontvangen. Voer eerst **sudo dhclient eth1** uit om een nieuw adres te krijgen. Voer daarna **rm /etc/resolv.conf** en **echo nameserver 8.8.8.8 > /etc/resolv.conf** uit om de DNS-server van google te gebruiken.
+
 ## Unifi installatie
 1. Verander de permissies door het commando **sudo chmod +777 /media/sf_shared** uit te voeren.
 

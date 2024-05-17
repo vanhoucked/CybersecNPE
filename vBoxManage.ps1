@@ -38,7 +38,8 @@ VBoxManage.exe sharedfolder add $vmName --name "shared" --hostpath "shared" --au
 
 VBoxManage.exe startvm $vmName --type headless
 
-Start-Sleep -Seconds 120
+Start-Sleep -Seconds 60
 
-winget install --id "PuTTY.PuTTY"
-putty -load "localhost" -l $USERNAME -pw $PASSWORD
+#$secureStringPassword = ConvertTo-SecureString $PASSWORD -AsPlainText -Force
+#$credential = New-Object System.Management.Automation.PSCredential ($USERNAME, $secureStringPassword)
+#$session = New-PSSession -HostName "localhost" -Credential $credential -Port "3022" -SSHTransport

@@ -1,5 +1,6 @@
 $vmName = "vulnerableVM"
 $vdiPath = "debian.vdi"
+$guestPath = "VBoxGuestAdditions.iso"
 $memory = "4096"
 $cpu = "4"
 
@@ -13,13 +14,15 @@ if ($existingVM) {
 }
 
 if (-Not (Test-Path -Path ".\debian.vdi")) {
-    Expand-Archive -Path .\Fedora.zip -DestinationPath .
+    Expand-Archive -Path .\debian.zip -DestinationPath .
 }
 
 Write-Host "Creating VM"
 VBoxManage.exe createvm --name $vmName --register
+
 VBoxManage.exe storagectl $vmName --name "SATA Controller" --add sata --controller IntelAhci
 VBoxManage.exe storageattach $vmName --storagectl "SATA Controller" --port 0 --device 0 --type hdd --medium $vdiPath
+VBoxManage.exe storageattach $vmName --storagectl "SATA Controller" --port 1 --device 0 --type dvddrive --medium $guestPath
 
 VBoxManage.exe modifyvm $vmName --memory $memory --cpus $cpu
 
@@ -34,4 +37,8 @@ VboxManage.exe modifyvm $vmName --nic2 hostonly --hostonlyadapter2 $hostonlyif
 VBoxManage.exe sharedfolder add $vmName --name "shared" --hostpath "shared" --automount
 
 VBoxManage.exe startvm $vmName --type headless
-Start-Sleep -Seconds 140
+
+Start-Sleep -Seconds 120
+
+winget install --id "PuTTY.PuTTY"
+putty -load "localhost" -l $USERNAME -pw $PASSWORD

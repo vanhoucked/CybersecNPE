@@ -22,3 +22,42 @@ Er werd voor Debian gekezen omdat Unifi hier native op draait. Daarnaast werd er
 
     > Deze commando's kunnen eventueel automatisch uitgevoerd worden met het VBoxManage guestcontrol commando.
 
+## Unifi installatie
+1. Verander de permissies door het commando **sudo chmod +777 /media/sf_shared** uit te voeren.
+
+2. Navigeer naar de shared folder met het commando **cd /media/sf_shared**.
+
+3. Voer daar het bash script uit met het commando **./script.ssh**
+
+    > In sommige gevallen worden de Virtualbox Guest Additions niet correct geïnstalleerd waardoor de gedeelde map geen bestanden bevat. Ga in dat geval verder met onderstaande stappen.
+
+4. Download het easy install script van Glenn Rietveld door het commando **wget https://get.glennr.nl/unifi/install/unifi-6.4.54.sh** uit te voeren.
+
+    > Er wordt hier bewust voor een oudere versie van de Unifi controller nl. 6.4.54. gekozen omdat hier de Log4J exploit nog niet gepatched is.
+
+    > Unifi kan ook manueel geïnstalleerd worden. De repository bevindt zich op https://dl.ui.com/unifi/6.4.54/UniFi-installer.exe. Hier wordt echter gebruik gemaakt van een script dat ook alle dependencies zoals de database en java installeert.
+
+5. Het easy install script vraagt af en toe om te bevestigen. Druk **y** wanneer hierom gevraagd wordt.
+
+
+
+
+## Mogelijke verbeteringen aan het script
+- De installatie van de guest additions moet gefinetuned worden. Momenteel wordt de lokale .iso gekoppeld aan de VM om deze dan uit te voeren maar af en toe faalt de installatie. Waarschijnlijk door dependencies die niet geïnstalleerd zijn.
+
+- Er bestaan mogelijkheden om de SSH verbinding automatisch te laten gebeuren. Er werd eerst gebruik gemaakt van het New-PSSession commando maar hier kwam ik op vast te zitten door het plain text wachtwoord.
+
+- Om veiligheidsredenen zou het root wachtwoord van osboxes aangepast moeten worden en moet de ssh verbinding met een private keypair gebeuren.
+
+
+## Gevolgen van deze exploit
+De Unifi controller is software die alle netwerkapparaten van de Unifi lijn van Ubiquiti beheert. Dit betreft switchen, WiFi access points, routers, ... Deze draait wereldwijd op servers, lokale cloudkeys of dreammachine's. Met de Log4J exploit kan een aanvaller toegang krijgen tot de controller en zo alle netwerk instellingen aanpassen.
+
+Wanneer er via de Unifi controller toegang is tot een router zoals de Dreammachine kan een aanvaller Firewall of IDS instellingen aanpassen om zo ook toegang te verschaffen tot andere systemen binnen het netwerk.
+
+## Mitigation
+Een voor de hand liggende oplossing is natuurlijk om de controller up te daten naar de nieuwste versie waar de exploit gepatched is. Alle versies na 6.4.54 hebben de Log4J patch.
+
+Daarnaast is het aangeraden om de toegang tot de controller te beperken. Veel netwerk administrators zetten deze open in de firewall om van overal toegang te hebben tot de instellingen. Er bestaan echter enkele manieren om dit op een veilige manier te verwezelijken.
+
+Enerzijds kan er gezorgd worden dat de Unifi controller enkel in het netwerk benaderbaar is. Dit is in veel gevallen echter niet gewenst. Via een VPN kan er wel op een veilige manier verbinding gemaakt worden met het netwerk om zo de controller aan te spreken. Anderzijds kan er als er dan toch poorten in de firewall opengezet moeten worden voor gezorgd worden dat deze enkel verkeer vanaf een vastgelegd IP-adres accepteren.

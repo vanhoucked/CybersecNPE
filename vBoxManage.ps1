@@ -46,9 +46,13 @@ VBoxManage.exe modifyvm $vmName --memory $memory --cpus $cpu
 VBoxManage.exe modifyvm $kaliName --memory $memory --cpus $cpu
 
 VBoxManage.exe modifyvm $vmName --nic1 nat
-VBoxManage.exe modifyvm $vmName --natpf1 "guestssh,tcp,,3022,,22"
+VBoxManage.exe modifyvm $vmName --natpf1 "ssh,tcp,,3022,,22"
+VBoxManage.exe modifyvm $vmName --nic1 nat
+VBoxManage.exe modifyvm $vmName --natpf2 "unifi communication,tcp,,8080,,8080"
+VBoxManage.exe modifyvm $vmName --nic1 nat
+VBoxManage.exe modifyvm $vmName --natpf3 "unifi gui,tcp,,8443,,8443"
 VBoxManage.exe modifyvm $kaliName --nic1 nat
-VBoxManage.exe modifyvm $kaliName --natpf1 "guestssh,tcp,,3022,,22"
+VBoxManage.exe modifyvm $kaliName --natpf1 "ssh,tcp,,3022,,22"
 
 $hostonlyif = (VBoxManage.exe hostonlyif create) -replace ".*'([^']+)'.*", '$1'
 VBoxManage.exe hostonlyif ipconfig $hostonlyif --ip "192.168.69.1" --netmask "255.255.255.0"

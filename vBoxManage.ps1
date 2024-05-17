@@ -56,7 +56,7 @@ VBoxManage.exe modifyvm $vmName --nic1 nat
 VBoxManage.exe modifyvm $vmName --natpf1 "ssh,tcp,,3022,,22"
 VBoxManage.exe modifyvm $vmName --nic1 nat
 VBoxManage.exe modifyvm $vmName --natpf1 "unifi communication,tcp,,8080,,8080"
-VBoyxManage.exe modifyvm $vmName --nic1 nat
+VBoxManage.exe modifyvm $vmName --nic1 nat
 VBoxManage.exe modifyvm $vmName --natpf1 "unifi gui,tcp,,8443,,8443"
 
 VBoxManage.exe modifyvm $kaliName --nic1 nat
@@ -65,7 +65,7 @@ VBoxManage.exe modifyvm $kaliName --natpf1 "ssh,tcp,,4022,,22"
 # Er wordt een host only interface aangemaakt die er voor zorgt dat communicatie tussen de host en de vm's mogelijk is. Ook communicatie tussen de VM's onderling is mogelijk.
 $hostonlyif = (VBoxManage.exe hostonlyif create) -replace ".*'([^']+)'.*", '$1'
 VBoxManage.exe hostonlyif ipconfig $hostonlyif --ip "192.168.69.1" --netmask "255.255.255.0"
-VBoxManage.exe dhcpserver add --netname $hostonlyif --ip "192.168.69.1" --netmask "255.255.255.0" --lowerip "192.168.69.10" --upperip "192.168.69.20" --enable
+VBoxManage.exe dhcpserver add --interface $hostonlyif --ip "192.168.69.1" --netmask "255.255.255.0" --lowerip "192.168.69.10" --upperip "192.168.69.20" --enable
 
 VboxManage.exe modifyvm $vmName --nic2 hostonly --hostonlyadapter2 $hostonlyif
 VboxManage.exe modifyvm $kaliName --nic2 hostonly --hostonlyadapter2 $hostonlyif

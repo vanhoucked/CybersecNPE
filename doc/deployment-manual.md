@@ -46,7 +46,8 @@ Er werd voor Debian gekezen omdat Unifi hier native op draait. Daarnaast werd er
 7. Als de shared folder wel het script *script.sh* bevat. Voer deze dan uit door eerst te navigeren naar de map met het commando **cd /media/sf_shared** om er naarda het script uit te voeren met het commando **./script.sh**
 
 ### Unifi controller configuratie
-1. Ga naar de controller webgui door in de zoekbalk van uw webbrowser **https://localhost:8443** in te geven.
+
+De configuratie van de Unifi controller wordt uitgelegd in een afzonderlijke [handleiding](unifi-manual.md)
 
 
 

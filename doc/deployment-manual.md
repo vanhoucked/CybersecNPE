@@ -1,5 +1,7 @@
 # Deployment handleiding
 
+De volledige GitHub repository met alle scripts, handleidingen en documentatie is beschikbaar via [https://github.com/vanhoucked/CybersecNPE.git](https://github.com/vanhoucked/CybersecNPE.git)
+
 ## VBoxManage
 1. Download [Debian 10 Buster - Server](https://sourceforge.net/projects/osboxes/files/v/vb/14-D-b/10/CLI/64bit.7z/download) en [Kali Linux 2022.1 (All Tools)](https://sourceforge.net/projects/osboxes/files/v/vb/25-Kl-l-x/2022.1/64bit.7z/download)
 
@@ -29,7 +31,7 @@ Er werd voor Debian gekezen omdat Unifi hier native op draait. Daarnaast werd er
 
 3. Voer daar het bash script uit met het commando **./script.ssh**
 
-    > In sommige gevallen worden de Virtualbox Guest Additions niet correct geïnstalleerd waardoor de gedeelde map geen bestanden bevat. Ga in dat geval verder met onderstaande stappen.
+    > In sommige gevallen worden de Virtualbox Guest Additions niet correct geïnstalleerd waardoor de gedeelde map geen bestanden bevat. Ga in dat geval verder met onderstaande stappen. Anders kan er naar stap 7 gegaan worden.
 
 4. Download het easy install script van Glenn Rietveld door het commando **wget https://get.glennr.nl/unifi/install/unifi-6.4.54.sh** uit te voeren.
 
@@ -37,7 +39,16 @@ Er werd voor Debian gekezen omdat Unifi hier native op draait. Daarnaast werd er
 
     > Unifi kan ook manueel geïnstalleerd worden. De repository bevindt zich op https://dl.ui.com/unifi/6.4.54/UniFi-installer.exe. Hier wordt echter gebruik gemaakt van een script dat ook alle dependencies zoals de database en java installeert.
 
-5. Het easy install script vraagt af en toe om te bevestigen. Druk **y** wanneer hierom gevraagd wordt.
+5. Voer het script uit door in de map waar het gedownload werd het commando **yes | sudo bash unifi-6.4.54.sh** uit te voeren.
+
+6. Voer **y** in wanneer het script hierom vraagt.
+
+7. Als de shared folder wel het script *script.sh* bevat. Voer deze dan uit door eerst te navigeren naar de map met het commando **cd /media/sf_shared** om er naarda het script uit te voeren met het commando **./script.sh**
+
+### Unifi controller configuratie
+1. Ga naar de controller webgui door in de zoekbalk van uw webbrowser **https://localhost:8443** in te geven.
+
+
 
 
 
@@ -49,6 +60,7 @@ Er werd voor Debian gekezen omdat Unifi hier native op draait. Daarnaast werd er
 
 - Om veiligheidsredenen zou het root wachtwoord van osboxes aangepast moeten worden en moet de ssh verbinding met een private keypair gebeuren.
 
+- Momenteel is er geen DHCP server ingesteld voor de host only interface. Daardoor moet er met port forwarding op de nat interface gewerkt worden voor communicatie met de host en met een intnet interface voor communicatie tussen de VM's onderling.
 
 ## Gevolgen van deze exploit
 De Unifi controller is software die alle netwerkapparaten van de Unifi lijn van Ubiquiti beheert. Dit betreft switchen, WiFi access points, routers, ... Deze draait wereldwijd op servers, lokale cloudkeys of dreammachine's. Met de Log4J exploit kan een aanvaller toegang krijgen tot de controller en zo alle netwerk instellingen aanpassen.

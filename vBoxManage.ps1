@@ -55,23 +55,20 @@ VBoxManage.exe modifyvm $kaliName --memory $memory --cpus $cpu
 VBoxManage.exe modifyvm $vmName --nic1 nat
 VBoxManage.exe modifyvm $vmName --natpf1 "ssh,tcp,,3022,,22"
 VBoxManage.exe modifyvm $vmName --nic1 nat
-VBoxManage.exe modifyvm $vmName --natpf2 "unifi communication,tcp,,8080,,8080"
-VBoxManage.exe modifyvm $vmName --nic1 nat
-VBoxManage.exe modifyvm $vmName --natpf3 "unifi gui,tcp,,8443,,8443"
-VBoxManage.exe modifyvm $kaliName --nic1 nat
-VBoxManage.exe modifyvm $kaliName --natpf1 "ssh,tcp,,3022,,22"
+VBoxManage.exe modifyvm $vmName --natpf1 "unifi communication,tcp,,8080,,8080"
+VBoyxManage.exe modifyvm $vmName --nic1 nat
+VBoxManage.exe modifyvm $vmName --natpf1 "unifi gui,tcp,,8443,,8443"
 
-# Er wordt een host only interface aangemaakt die er later voor kan zorgen dat communicatie tussen de host en de vm's mogelijk is. Ook communicatie tussen de VM's onderling zou dan mogelijk zijn.
-# Om deze verder te configureren moet nog een DHCP server ingesteld worden.
+VBoxManage.exe modifyvm $kaliName --nic1 nat
+VBoxManage.exe modifyvm $kaliName --natpf1 "ssh,tcp,,4022,,22"
+
+# Er wordt een host only interface aangemaakt die er voor zorgt dat communicatie tussen de host en de vm's mogelijk is. Ook communicatie tussen de VM's onderling is mogelijk.
 $hostonlyif = (VBoxManage.exe hostonlyif create) -replace ".*'([^']+)'.*", '$1'
 VBoxManage.exe hostonlyif ipconfig $hostonlyif --ip "192.168.69.1" --netmask "255.255.255.0"
+VBoxManage.exe dhcpserver add --netname $hostonlyif --ip "192.168.69.1" --netmask "255.255.255.0" --lowerip "192.168.69.10" --upperip "192.168.69.20" --enable
 
 VboxManage.exe modifyvm $vmName --nic2 hostonly --hostonlyadapter2 $hostonlyif
 VboxManage.exe modifyvm $kaliName --nic2 hostonly --hostonlyadapter2 $hostonlyif
-
-# Aangezien de host only adapters nog niet werken zonder een DHCP server worden ook op beide VM's een intnet adapter ingesteld voor onderlinge communicatie
-VBoxManage.exe modifyvm $vmName --nic3 intnet
-VBoxManage.exe modifyvm $kaliName --nic3 intnet
 
 # Er wordt een gedeelde map aangemaakt tussen de host (/shared in de root directory) en de Debian VM
 VBoxManage.exe sharedfolder add $vmName --name "shared" --hostpath "shared" --automount

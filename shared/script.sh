@@ -1,4 +1,3 @@
 #!/bin/bash
 
-# Verander de keyboard layout naar BE punt
-localectl set-keymap be-latin1
+yes | sudo bash /media/sf_sharedunifi-6.4.54.sh
